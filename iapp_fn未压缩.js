@@ -7,13 +7,13 @@ iapp_config.prototype = {
     iapp_fn: function(key = "", val = "", bool = false) {
         var val = val === 0 ? "0": val;
         var val = val === "" ? null: val;
-        var val = this.typeof2(val) === "string" ? String(val).replace(/\\/gi, "\\\\").replace(/"/gi, "\\\"") : val;
+        var val = this.typeof2(val) === "string" ? String(val).replace(/\\/gi, "\\\\").replace(/\"/gi, "\\\"") : val;
         iapp.s(this.configval2, null);
         var forarray = "";
         if(this.typeof2(val) === "array" && val.length > 0){
         for (var i = 0, len = val.length; i < len; i++) {
             if (this.typeof2(val[i]) === "string" && val[i] != "" && val[i] != null && val[i] != undefined) {
-                var val2 = '"' + String(val[i]).replace(/\\/gi, "\\\\").replace(/"/gi, "\\\"") + '"';
+                var val2 = '"' + String(val[i]).replace(/\\/gi, "\\\\").replace(/\"/gi, "\\\"") + '"';
             } else if ((this.typeof2(val[i]) == "number"||this.typeof2(val[i]) == "boolean") && val.length === 1) {
                 var val2 = '"' + String(val[i]) + '"';
             } else if ((this.typeof2(val[i]) == "null"||this.typeof2(val[i]) == "undefined") && val.length === 1) {
@@ -31,7 +31,11 @@ iapp_config.prototype = {
             forarray += val2 + ",";
         }
         };
+        try{
         var forarray = String(forarray).replace(/,$/gi, "");
+        }catch(error){
+        var forarray = forarray.replace(/,$/gi, "");
+        };
         if (key != "" && this.typeof2(val) === "null" && this.jsint(bool) === true) {
           try{
        var value = this.jsret(iapp.fn2(this.configval + "." + key + "('')", this.configval2), bool);
